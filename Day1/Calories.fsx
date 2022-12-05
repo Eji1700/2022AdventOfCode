@@ -20,20 +20,31 @@ let splitBy (cond: 'a -> bool) (source: 'a seq) =
 let elfs = 
     inputData
     |> splitBy String.IsNullOrWhiteSpace
-    |> Seq.map
-        (Seq.tail 
-        >> (Seq.map Int32.Parse)
-        >> Seq.sum)
-    |> Seq.cache
+    |> Seq.map(fun elf ->
+        elf
+        |> Seq.choose(fun value ->
+            let res = Int32.TryParse value
+            match res with 
+            | true, i -> Some i 
+            | false, _ -> None
+        )
+    )
 
-let Answer1 =
-    elfs
-    |> Seq.max
+elfs
 
-let Answer2 =
-    elfs
-    |> Seq.sortDescending
-    |> Seq.take 3
-    |> Seq.sum
+    //     (Seq.tail 
+    //     >> (Seq.map Int32.Parse)
+    //     >> Seq.sum)
+    // |> Seq.cache
 
-Answer2
+// let Answer1 =
+//     elfs
+//     |> Seq.max
+
+// let Answer2 =
+//     elfs
+//     |> Seq.sortDescending
+//     |> Seq.take 3
+//     |> Seq.sum
+
+// Answer1
