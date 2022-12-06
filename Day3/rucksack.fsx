@@ -1,6 +1,6 @@
 open System.IO
 
-// let data = File.ReadAllLines @".\Day3\input.txt"
+let data = File.ReadAllLines @".\Day3\input.txt"
 
 let charToPriority (c:char) =
     let charInt = int c
@@ -9,5 +9,18 @@ let charToPriority (c:char) =
     elif charInt >= 97 && charInt <= 122 then 
         charInt - 96
     else
-        charInt
-charToPriority 'z'
+        failwith $"Invalid char {c} to int {charInt}"
+
+let Answer1 =
+    data
+    |> Seq.map(fun ruckSacks ->
+        ruckSacks
+        |> Seq.map charToPriority
+        |> Seq.splitInto 2
+        |> Seq.map(fun intSack -> intSack |> Set.ofArray ) // Feel like maybe there's a Seq.function that does this cleaner but I couldn't find it?
+        |> Set.intersectMany
+        |> Set.maxElement  // uhhh...got to be a better way to do this?
+    )
+    |> Seq.sum
+
+Answer1
