@@ -2,7 +2,7 @@ open System.IO
 
 let data = File.ReadAllLines @".\Day3\input.txt"
 
-let charToPriority (c:char) =
+let charToPriority (c:char) = // I know there's some clever way to do this but my life so far has not required it, so hacky it is
     let charInt = int c
     if charInt >= 65 && charInt <= 90 then
         charInt - 38
