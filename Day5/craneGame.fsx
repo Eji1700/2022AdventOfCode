@@ -8,7 +8,7 @@ let instuctions = inputData |> Array.where(fun entry -> entry.StartsWith "move")
 
 let cellParse (cell: char[]) = 
     if cell[0] = '[' then cell[1].ToString()
-    else ""
+    else " "
 
 let boardParse =
     board
