@@ -1,4 +1,4 @@
-
+open System
 open System.IO
 
 let inputData = File.ReadAllLines @".\Day5\input.txt"
@@ -10,8 +10,8 @@ let cellParse (cell: char[]) =
     if cell[0] = '[' then cell[1].ToString()
     else " "
 
-let boardParse =
-    board
+let boardParse boardArr =
+    boardArr
     |> Array.map( fun row ->
         row 
         |> Seq.splitInto 9
@@ -19,7 +19,18 @@ let boardParse =
         |> Seq.toArray
     ) 
     |> Array.transpose
-boardParse 
+boardParse board
 
-let instructionParse =
-    instuctions
+let isInt (s:string) =
+    match Int32.TryParse s with
+    | true, v -> Some v
+    | false, _ -> None
+
+let instructionParse (instructionArr: string []) =
+    instructionArr
+    |> Array.map(fun instruction ->
+        instruction.Split " "
+        |> Array.choose isInt
+    )
+    
+instructionParse instuctions
