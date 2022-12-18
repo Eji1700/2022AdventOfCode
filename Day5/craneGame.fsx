@@ -61,9 +61,32 @@ let followInstruction (board: string list list) inst =
     |> List.mapi(fun i col ->
         if i = inst.Source - 1 then newSource
         elif i = inst.Destination - 1 then newDest
-        else col
-    )
+        else col )
 
-instructions
-|> Array.fold followInstruction board 
-|> List.map List.head
+let part1 =
+    instructions
+    |> Array.fold followInstruction board 
+    |> List.map List.head
+
+let followInstruction2 (board: string list list) inst =
+    let moves, newSource =
+        board[inst.Source - 1]
+        |> List.splitAt inst.Qty
+
+    let newDest =
+        moves
+        |> fun m -> m @ board[inst.Destination - 1] 
+
+    board
+    |> List.mapi(fun i col ->
+        if i = inst.Source - 1 then newSource
+        elif i = inst.Destination - 1 then newDest
+        else col )
+
+let part2 = 
+    instructions
+    |> Array.fold followInstruction2 board 
+    |> List.map List.head
+
+part1
+part2
