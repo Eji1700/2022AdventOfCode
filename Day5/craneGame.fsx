@@ -47,7 +47,7 @@ let boardParse boardArr =
     )
 let board = boardParse boardArr
 
-let followInstruction inst (board: string list list) =
+let followInstruction (board: string list list) inst =
     let moves, newSource =
         board[inst.Source - 1]
         |> List.splitAt inst.Qty
@@ -64,4 +64,6 @@ let followInstruction inst (board: string list list) =
         else col
     )
 
-followInstruction instructions[0] board
+instructions
+|> Array.fold followInstruction board 
+|> List.map List.head
