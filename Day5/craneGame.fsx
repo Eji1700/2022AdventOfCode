@@ -21,16 +21,26 @@ let boardParse boardArr =
     |> Array.transpose
 boardParse board
 
-let isInt (s:string) =
-    match Int32.TryParse s with
-    | true, v -> Some v
-    | false, _ -> None
+type Instruction =
+    {   Qty: int
+        Source: int
+        Destination: int }
 
-let instructionParse (instructionArr: string []) =
-    instructionArr
-    |> Array.map(fun instruction ->
-        instruction.Split " "
-        |> Array.choose isInt
-    )
-    
-instructionParse instuctions
+module Instruction =
+    let private isInt (s:string) =
+        match Int32.TryParse s with
+        | true, v -> Some v
+        | false, _ -> None
+
+    let Parse (instructionArr: string []) =
+        instructionArr
+        |> Array.map(fun instruction ->
+            instruction.Split " "
+            |> Array.choose isInt
+            |> fun arr ->
+                {   Qty = arr[0]
+                    Source = arr[1]
+                    Destination = arr[2] }
+        )
+
+Instruction.Parse instuctions
