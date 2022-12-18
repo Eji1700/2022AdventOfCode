@@ -3,8 +3,8 @@ open System.IO
 
 let inputData = File.ReadAllLines @".\Day5\input.txt"
 
-let instuctions = inputData |> Array.where(fun entry -> entry.StartsWith "move")
-let board = inputData |> Array.take 8
+let instuctionsArr = inputData |> Array.where(fun entry -> entry.StartsWith "move")
+let boardArr = inputData |> Array.take 8
 
 type Instruction =
     {   Qty: int
@@ -28,7 +28,7 @@ module Instruction =
                     Destination = arr[2] }
         )
 
-Instruction.Parse instuctions
+let instructions = Instruction.Parse instuctionsArr
 
 let cellParse (cell: char[]) = 
     if cell[0] = '[' then cell[1].ToString() |> Some
@@ -45,4 +45,23 @@ let boardParse boardArr =
         lst
         |> List.choose cellParse
     )
-boardParse board
+let board = boardParse boardArr
+
+let followInstruction inst (board: string list list) =
+    let moves, newSource =
+        board[inst.Source - 1]
+        |> List.splitAt inst.Qty
+
+    let newDest =
+        moves
+        |> List.rev
+        |> fun m -> m @ board[inst.Destination - 1] 
+
+    board
+    |> List.mapi(fun i col ->
+        if i = inst.Source - 1 then newSource
+        elif i = inst.Destination - 1 then newDest
+        else col
+    )
+
+followInstruction instructions[0] board
