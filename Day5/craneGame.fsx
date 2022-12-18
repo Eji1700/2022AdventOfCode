@@ -17,5 +17,9 @@ let boardParse =
         |> Seq.splitInto 9
         |> Seq.map cellParse 
         |> Seq.toArray
-    )
-boardParse
+    ) 
+    |> Array.transpose
+boardParse 
+
+let instructionParse =
+    instuctions
